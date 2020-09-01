@@ -35,7 +35,7 @@ function PostCard({
                 <Button as="div" labelPosition="right" onClick={commentOnPost}>
                     <Button color="blue" basic>
                         <Icon name="comments" />
-                        Like
+                        Comment
                     </Button>
                     <Label as="a" basic color="blue" pointing="left">
                         {commentCount}
