@@ -2,29 +2,39 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/react-hooks";
 import { Button, Confirm, Icon } from "semantic-ui-react";
 
-import { DELETE_POST, FETCH_POSTS_QUERY } from "../util/graphql";
+import {
+    DELETE_POST,
+    DELETE_COMMENT,
+    FETCH_POSTS_QUERY
+} from "../util/graphql";
 
-function DeleteButton({ postId, callback }) {
+function DeleteButton({ postId, commentId, callback }) {
     const [confirmOpen, setConfirmOpen] = useState(false);
 
-    const [deletePost] = useMutation(DELETE_POST, {
+    const mutation = commentId ? DELETE_COMMENT : DELETE_POST;
+
+    const [deletePostOrComment] = useMutation(mutation, {
         update(proxy) {
             setConfirmOpen(false);
-
-            const data = proxy.readQuery({
-                query: FETCH_POSTS_QUERY
-            });
-            proxy.writeQuery({
-                query: FETCH_POSTS_QUERY,
-                data: {
-                    getPosts: data.getPosts.filter((post) => post.id !== postId)
-                }
-            });
+            if (!commentId) {
+                const data = proxy.readQuery({
+                    query: FETCH_POSTS_QUERY
+                });
+                proxy.writeQuery({
+                    query: FETCH_POSTS_QUERY,
+                    data: {
+                        getPosts: data.getPosts.filter(
+                            (post) => post.id !== postId
+                        )
+                    }
+                });
+            }
 
             if (callback) callback();
         },
         variables: {
-            postId
+            postId,
+            commentId
         }
     });
 
@@ -41,7 +51,7 @@ function DeleteButton({ postId, callback }) {
             <Confirm
                 open={confirmOpen}
                 onCancel={() => setConfirmOpen(false)}
-                onConfirm={deletePost}
+                onConfirm={deletePostOrComment}
                 confirmButton="Yes"
                 content="Are you sure you want to delete this post?"
             />
