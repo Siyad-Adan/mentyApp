@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/react-hooks";
-import { Grid } from "semantic-ui-react";
+import { Grid, Transition, Loader } from "semantic-ui-react";
 
 import { AuthContext } from "../context/auth";
 import PostCard from "../components/PostCard";
@@ -12,7 +12,7 @@ function Home() {
     const { loading, error, data } = useQuery(FETCH_POSTS_QUERY, {
         errorPolicy: "all"
     });
-    if (loading) return <div>Loading</div>;
+    if (loading) return <Loader active></Loader>;
     if (error) return <p>ERROR</p>;
     if (!data) return <p>Not found</p>;
 
@@ -29,11 +29,13 @@ function Home() {
                         <PostForm />
                     </Grid.Column>
                 )}
-                {posts.map((post) => (
-                    <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
-                        <PostCard post={post} />
-                    </Grid.Column>
-                ))}
+                <Transition.Group>
+                    {posts.map((post) => (
+                        <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
+                            <PostCard post={post} />
+                        </Grid.Column>
+                    ))}
+                </Transition.Group>
             </Grid.Row>
         </Grid>
     );

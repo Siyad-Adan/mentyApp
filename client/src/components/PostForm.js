@@ -24,29 +24,42 @@ function PostForm() {
                     getPosts: [result.data.createPost, ...data.getPosts]
                 }
             });
-
             values.body = "";
+        },
+        onError(error) {
+            console.log(error);
         }
     });
 
     function createPostCallback() {
         createPost();
     }
+
     return (
-        <Form onSubmit={onSubmit}>
-            <h2>Create a post:</h2>
-            <Form.Field>
-                <Form.Input
-                    placeholder="Write a post..."
-                    name="body"
-                    onChange={onChange}
-                    value={values.body}
-                />
-                <Button type="submit" color="teal">
-                    Submit
-                </Button>
-            </Form.Field>
-        </Form>
+        <>
+            <Form onSubmit={onSubmit}>
+                <h2>Create a post:</h2>
+                <Form.Field>
+                    <Form.Input
+                        placeholder="Write a post..."
+                        name="body"
+                        onChange={onChange}
+                        value={values.body}
+                        error={error ? true : false}
+                    />
+                    <Button type="submit" color="teal">
+                        Submit
+                    </Button>
+                </Form.Field>
+            </Form>
+            {error && (
+                <div className="ui error message" style={{ marginBottom: 20 }}>
+                    <ul className="list">
+                        <li>{error.graphQLErrors[0].message}</li>
+                    </ul>
+                </div>
+            )}
+        </>
     );
 }
 

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button, Form } from "semantic-ui-react";
-import { useMutation, from } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 
 import { AuthContext } from "../context/auth";
 import { useForm } from "../util/hooks";
@@ -17,7 +17,7 @@ function Register(props) {
         confirmPassword: ""
     });
 
-    const [addUser, { loading, error }] = useMutation(REGISTER_USER, {
+    const [addUser, { loading }] = useMutation(REGISTER_USER, {
         update(proxy, { data: { register: userData } }) {
             context.login(userData);
             props.history.push("/");
