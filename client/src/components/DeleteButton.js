@@ -8,6 +8,8 @@ import {
     FETCH_POSTS_QUERY
 } from "../util/graphql";
 
+import TemplatePopup from "../util/TemplatePopup";
+
 function DeleteButton({ postId, commentId, callback }) {
     const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -40,14 +42,18 @@ function DeleteButton({ postId, commentId, callback }) {
 
     return (
         <>
-            <Button
-                as="div"
-                color="red"
-                floated="right"
-                onClick={() => setConfirmOpen(true)}
+            <TemplatePopup
+                content={commentId ? "Delete this comment" : "Delete this post"}
             >
-                <Icon name="trash" style={{ margin: 0 }} />
-            </Button>
+                <Button
+                    as="div"
+                    color="red"
+                    floated="right"
+                    onClick={() => setConfirmOpen(true)}
+                >
+                    <Icon name="trash" style={{ margin: 0 }} />
+                </Button>
+            </TemplatePopup>
             <Confirm
                 open={confirmOpen}
                 onCancel={() => setConfirmOpen(false)}
