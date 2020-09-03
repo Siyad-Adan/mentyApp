@@ -5,6 +5,6 @@ https://menty.netlify.app/
 
 MERNG Stack App
 
-Backend of menty Website (utilizing Node.js, express, mongoDB)
+Backend of menty Website (utilizing Node.js, GraphQL, express, mongoDB)
 
 Frontend of menty Website (utilizing React, Apollo GraphQL, Semantic UI)
